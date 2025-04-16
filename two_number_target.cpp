@@ -1,48 +1,28 @@
-#include <iostream>
-#include <vector>
-using namespace std;
+def find_two_sum(arr, target):
+    left = 0
+    right = len(arr) - 1
 
-bool findTwoSum(const vector<int>& arr, int target) {
-    int left = 0;  // Initialize left pointer
-    int right = arr.size() - 1;  // Initialize right pointer
+    while left < right:
+        current_sum = arr[left] + arr[right]
 
-    // Traverse the array using two pointers
-    while (left < right) {
-        int currentSum = arr[left] + arr[right];
+        if current_sum == target:
+            print(f"Pair found: ({arr[left]}, {arr[right]})")
+            return True
+        elif current_sum < target:
+            left += 1
+        else:
+            right -= 1
 
-        // Check if the current sum equals the target
-        if (currentSum == target) {
-            cout << "Pair found: (" << arr[left] << ", " << arr[right] << ")\n";
-            return true;
-        } 
-        // Adjust the pointers based on the current sum
-        else if (currentSum < target) {
-            left++;  // Move the left pointer to the right
-        } else {
-            right--;  // Move the right pointer to the left
-        }
-    }
+    return False
 
-    return false;  // No pair found
-}
+def main():
+    n = int(input("Enter the size of the array: "))
+    target = int(input("Enter the target sum: "))
 
-int main() {
-    int n, target;
-    cout << "Enter the size of the array: ";
-    cin >> n;
-    
-    cout << "Enter the target sum: ";
-    cin >> target;
+    arr = list(map(int, input(f"Enter {n} sorted elements:\n").split()))
 
-    vector<int> arr(n);
-    cout << "Enter " << n << " sorted elements:\n";
-    for (int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
+    if not find_two_sum(arr, target):
+        print("No pair found that adds up to the target.")
 
-    if (!findTwoSum(arr, target)) {
-        cout << "No pair found that adds up to the target.\n";
-    }
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
