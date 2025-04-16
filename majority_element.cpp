@@ -1,56 +1,29 @@
-#include <iostream>
-#include <vector>
-using namespace std;
+def find_majority_element(arr):
+    candidate = -1
+    count = 0
 
-int findMajorityElement(const vector<int>& arr) {
-    int candidate = -1;  // Candidate for majority element
-    int count = 0;
+    for num in arr:
+        if count == 0:
+            candidate = num
+        count += 1 if num == candidate else -1
 
-    // Find the candidate for majority element using Boyer-Moore Voting Algorithm
-    for (int num : arr) {
-        if (count == 0) {
-            candidate = num;  // Set the candidate
-        }
-        // Increment or decrement the count based on whether the current number matches the candidate
-        count += (num == candidate) ? 1 : -1;
-    }
+    count_candidate = sum(1 for num in arr if num == candidate)
 
-    // Verify if the candidate is actually the majority element
-    int countCandidate = 0;
-    for (int num : arr) {
-        if (num == candidate) {
-            countCandidate++;
-        }
-    }
+    if count_candidate > len(arr) // 2:
+        return candidate
+    else:
+        return -1
 
-    // If the candidate appears more than n/2 times, return it, otherwise return -1
-    if (countCandidate > arr.size() / 2) {
-        return candidate;
-    } else {
-        return -1;  // No majority element
-    }
-}
+def main():
+    n = int(input("Enter the size of the array: "))
+    arr = list(map(int, input(f"Enter {n} elements:\n").split()))
 
-int main() {
-    // array size and elements
-    int n;
-    cout << "Enter the size of the array: ";
-    cin >> n;
+    result = find_majority_element(arr)
 
-    vector<int> arr(n);
-    cout << "Enter " << n << " elements:\n";
-    for (int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
+    if result == -1:
+        print("No majority element found.")
+    else:
+        print(f"The majority element is: {result}")
 
-    // Call the function to find the majority element
-    int result = findMajorityElement(arr);
-
-    if (result == -1) {
-        cout << "No majority element found.\n";
-    } else {
-        cout << "The majority element is: " << result << endl;
-    }
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
