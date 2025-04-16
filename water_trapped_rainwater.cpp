@@ -1,42 +1,31 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
+def trap(height):
+    n = len(height)
+    if n == 0:
+        return 0
 
-int trap(vector<int>& height) {
-    int n = height.size();
-    if (n == 0) return 0;
+    max_left = [0] * n
+    max_right = [0] * n
 
-    // Arrays to store the maximum height to the left and right of each element
-    vector<int> maxLeft(n), maxRight(n);
+    # Fill the max_left array
+    max_left[0] = height[0]
+    for i in range(1, n):
+        max_left[i] = max(max_left[i - 1], height[i])
 
-    // Fill the maxLeft array
-    maxLeft[0] = height[0];
-    for (int i = 1; i < n; i++) {
-        maxLeft[i] = max(maxLeft[i - 1], height[i]);
-    }
+    # Fill the max_right array
+    max_right[n - 1] = height[n - 1]
+    for i in range(n - 2, -1, -1):
+        max_right[i] = max(max_right[i + 1], height[i])
 
-    // Fill the maxRight array
-    maxRight[n - 1] = height[n - 1];
-    for (int i = n - 2; i >= 0; i--) {
-        maxRight[i] = max(maxRight[i + 1], height[i]);
-    }
+    # Calculate the total water trapped
+    total_water = 0
+    for i in range(n):
+        total_water += min(max_left[i], max_right[i]) - height[i]
 
-    // Calculate the total water trapped
-    int totalWater = 0;
-    for (int i = 0; i < n; i++) {
-        totalWater += min(maxLeft[i], maxRight[i]) - height[i];
-    }
+    return total_water
 
-    return totalWater;
-}
+if __name__ == "__main__":
+    height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
 
-int main() {
-    vector<int> height = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
-
-    int result = trap(height);
+    result = trap(height)
     
-    cout << "Total water trapped: " << result << " units" << endl;
-
-    return 0;
-}
+    print(f"Total water trapped: {result} units")
