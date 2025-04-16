@@ -1,65 +1,50 @@
-#include <iostream>
-using namespace std;
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
-struct ListNode {
-    int val;
-    ListNode* next;
-    ListNode(int x) : val(x), next(nullptr) {}
-};
+def merge_two_lists(l1, l2):
+    dummy = ListNode(0)
+    current = dummy
 
-ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-    ListNode* dummy = new ListNode(0);
-    ListNode* current = dummy;
-    
-    while (l1 != nullptr && l2 != nullptr) {
-        if (l1->val < l2->val) {
-            current->next = l1;
-            l1 = l1->next;
-        } else {
-            current->next = l2;
-            l2 = l2->next;
-        }
-        current = current->next;
-    }
-    
-    // Attach the remaining nodes of whichever list is not empty
-    if (l1 != nullptr) {
-        current->next = l1;
-    } else {
-        current->next = l2;
-    }
+    while l1 and l2:
+        if l1.val < l2.val:
+            current.next = l1
+            l1 = l1.next
+        else:
+            current.next = l2
+            l2 = l2.next
+        current = current.next
 
-    // The head of merged list is next of dummy node
-    return dummy->next;
-}
+    current.next = l1 if l1 else l2
+    return dummy.next
 
-// Function to print linked list
-void printList(ListNode* head) {
-    while (head != nullptr) {
-        cout << head->val << " ";
-        head = head->next;
-    }
-    cout << endl;
-}
+# Helper to create a linked list from a list
+def create_list(arr):
+    if not arr:
+        return None
+    head = ListNode(arr[0])
+    current = head
+    for val in arr[1:]:
+        current.next = ListNode(val)
+        current = current.next
+    return head
 
-ListNode* createNode(int val) {
-    return new ListNode(val);
-}
+# Helper to print a linked list
+def print_list(head):
+    while head:
+        print(head.val, end=" ")
+        head = head.next
+    print()
 
-int main() {
-    ListNode* l1 = createNode(1);
-    l1->next = createNode(2);
-    l1->next->next = createNode(4);
+def main():
+    l1 = create_list([1, 2, 4])
+    l2 = create_list([1, 3, 4])
 
-    ListNode* l2 = createNode(1);
-    l2->next = createNode(3);
-    l2->next->next = createNode(4);
+    merged_list = merge_two_lists(l1, l2)
 
-    // Merging
-    ListNode* mergedList = mergeTwoLists(l1, l2);
+    print("Merged Linked List:", end=" ")
+    print_list(merged_list)
 
-    cout << "Merged Linked List: ";
-    printList(mergedList);
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
