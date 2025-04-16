@@ -1,50 +1,30 @@
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <queue>
-using namespace std;
+from collections import Counter
+import heapq
 
+def top_k_frequent(nums, k):
+    freq_map = Counter(nums)
+    max_heap = []
 
-vector<int> topKFrequent(vector<int>& nums, int k) {
-    unordered_map<int, int> freqMap;
+    for num, freq in freq_map.items():
+        heapq.heappush(max_heap, (-freq, num))  # Use negative frequency for max-heap
 
-    // Count frequencies
-    for (int num : nums) {
-        freqMap[num]++;
-    }
+    result = []
+    for _ in range(k):
+        result.append(heapq.heappop(max_heap)[1])
 
-    // Push elements into a max heap (priority queue)
-    priority_queue<pair<int, int>> maxHeap; // {frequency, number}
+    return result
 
-    for (auto& entry : freqMap) {
-        maxHeap.push({entry.second, entry.first});
-    }
+def print_vector(vec):
+    print(" ".join(map(str, vec)))
 
-    // Extract top k elements
-    vector<int> result;
-    for (int i = 0; i < k && !maxHeap.empty(); ++i) {
-        result.push_back(maxHeap.top().second);
-        maxHeap.pop();
-    }
+def main():
+    nums = [1, 1, 1, 2, 2, 3]
+    k = 2
 
-    return result;
-}
+    result = top_k_frequent(nums, k)
 
-// Helper function
-void printVector(const vector<int>& vec) {
-    for (int val : vec)
-        cout << val << " ";
-    cout << endl;
-}
+    print(f"Top {k} frequent elements: ", end="")
+    print_vector(result)
 
-int main() {
-    vector<int> nums = {1, 1, 1, 2, 2, 3};
-    int k = 2;
-
-    vector<int> result = topKFrequent(nums, k);
-
-    cout << "Top " << k << " frequent elements: ";
-    printVector(result);
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
