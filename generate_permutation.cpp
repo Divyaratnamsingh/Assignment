@@ -1,61 +1,34 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
+def generate_permutations(nums, current, used, result):
+    if len(current) == len(nums):
+        result.append(current[:])
+        return
 
-void generatePermutations(vector<int>& nums, vector<int>& current, vector<bool>& used, vector<vector<int>>& result) {
-    // If the current permutation is of the same length as the original array
-    // add it to the result
-    if (current.size() == nums.size()) {
-        result.push_back(current);
-        return;
-    }
+    for i in range(len(nums)):
+        if used[i] or (i > 0 and nums[i] == nums[i - 1] and not used[i - 1]):
+            continue
 
-    for (int i = 0; i < nums.size(); ++i) {
-        // Skip the used elements or duplicates to avoid generating same permutations
-        if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])) continue;
+        used[i] = True
+        current.append(nums[i])
+        generate_permutations(nums, current, used, result)
+        used[i] = False
+        current.pop()
 
-        // Mark the current element as used
-        used[i] = true;
-        current.push_back(nums[i]);
+def permute_unique(nums):
+    result = []
+    nums.sort()
+    used = [False] * len(nums)
+    generate_permutations(nums, [], used, result)
+    return result
 
-        // Recurse to generate the next part of the permutation
-        generatePermutations(nums, current, used, result);
+def print_permutations(permutations):
+    for perm in permutations:
+        print("[", " ".join(map(str, perm)), "]")
 
-        // Backtrack by unmarking the current element and removing it from the current permutation
-        used[i] = false;
-        current.pop_back();
-    }
-}
+def main():
+    nums = [1, 1, 2]
+    print("All unique permutations:")
+    result = permute_unique(nums)
+    print_permutations(result)
 
-vector<vector<int>> permuteUnique(vector<int>& nums) {
-    vector<vector<int>> result;
-    vector<int> current;
-    vector<bool> used(nums.size(), false);
-
-    // Sort the array to handle duplicates
-    sort(nums.begin(), nums.end());
-
-    generatePermutations(nums, current, used, result);
-    return result;
-}
-
-void printPermutations(const vector<vector<int>>& permutations) {
-    for (const auto& perm : permutations) {
-        cout << "[ ";
-        for (int num : perm) {
-            cout << num << " ";
-        }
-        cout << "]\n";
-    }
-}
-
-int main() {
-    vector<int> nums = {1, 1, 2};
-
-    cout << "All unique permutations:\n";
-    vector<vector<int>> result = permuteUnique(nums);
-    printPermutations(result);
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
