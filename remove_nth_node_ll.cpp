@@ -1,79 +1,58 @@
-#include <iostream>
-#include <vector>
-using namespace std;
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
+def remove_nth_from_end(head, n):
+    dummy = ListNode(0)
+    dummy.next = head
+    first = dummy
+    second = dummy
 
-struct ListNode {
-    int val;
-    ListNode* next;
-    ListNode(int x) : val(x), next(nullptr) {}
-};
+    # Move first n+1 steps ahead to create a gap of n nodes
+    for _ in range(n + 1):
+        first = first.next
 
+    # Move both pointers until first reaches the end
+    while first:
+        first = first.next
+        second = second.next
 
-ListNode* removeNthFromEnd(ListNode* head, int n) {
-    // Create a dummy node to handle edge cases (like deleting the head)
-    ListNode* dummy = new ListNode(0);
-    dummy->next = head;
+    # Delete the n-th node from the end
+    second.next = second.next.next
 
-    ListNode* first = dummy;
-    ListNode* second = dummy;
+    return dummy.next
 
-    // Move first pointer n+1 steps ahead so there's a gap of n between first and second
-    for (int i = 0; i <= n; ++i) {
-        first = first->next;
-    }
+# Helper: Create linked list from list
+def create_list(vals):
+    if not vals:
+        return None
+    head = ListNode(vals[0])
+    current = head
+    for val in vals[1:]:
+        current.next = ListNode(val)
+        current = current.next
+    return head
 
-    // Move both pointers until first reaches the end
-    while (first != nullptr) {
-        first = first->next;
-        second = second->next;
-    }
+# Helper: Print linked list
+def print_list(head):
+    while head:
+        print(head.val, end=" ")
+        head = head.next
+    print()
 
-    // Remove the node
-    ListNode* nodeToDelete = second->next;
-    second->next = second->next->next;
-    delete nodeToDelete;
+def main():
+    values = [1, 2, 3, 4, 5]
+    head = create_list(values)
+    n = 2
 
-    // Return the new head
-    ListNode* newHead = dummy->next;
-    delete dummy;
-    return newHead;
-}
+    print("Original List:")
+    print_list(head)
 
-// Helper function 
-void printList(ListNode* head) {
-    while (head != nullptr) {
-        cout << head->val << " ";
-        head = head->next;
-    }
-    cout << endl;
-}
+    head = remove_nth_from_end(head, n)
 
-// Helper function
-ListNode* createList(const vector<int>& vals) {
-    if (vals.empty()) return nullptr;
-    ListNode* head = new ListNode(vals[0]);
-    ListNode* current = head;
-    for (int i = 1; i < vals.size(); ++i) {
-        current->next = new ListNode(vals[i]);
-        current = current->next;
-    }
-    return head;
-}
+    print(f"List after removing {n}-th node from the end:")
+    print_list(head)
 
-int main() {
-    
-    vector<int> values = {1, 2, 3, 4, 5};
-    ListNode* head = createList(values);
-
-    int n = 2; 
-    cout << "Original List: ";
-    printList(head);
-
-    head = removeNthFromEnd(head, n);
-
-    cout << "List after removing " << n << "-th node from end: ";
-    printList(head);
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
