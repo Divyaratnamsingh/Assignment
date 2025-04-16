@@ -1,60 +1,45 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-using namespace std;
+import heapq
 
-struct Element {
-    int value;
-    int row;
-    int col;
+class Element:
+    def __init__(self, value, row, col):
+        self.value = value
+        self.row = row
+        self.col = col
     
-    Element(int v, int r, int c) : value(v), row(r), col(c) {}
-    
-    // Overload the comparison operator to create a min-heap
-    bool operator>(const Element& other) const {
-        return value > other.value;
-    }
-};
+    def __lt__(self, other):
+        return self.value < other.value
 
-int kthSmallest(vector<vector<int>>& matrix, int k) {
-    int n = matrix.size();
+def kth_smallest(matrix, k):
+    n = len(matrix)
     
-    // Min-heap to store the elements with their row and column indices
-    priority_queue<Element, vector<Element>, greater<Element>> minHeap;
+    min_heap = []
     
-    // Push the first element of each row into the min-heap
-    for (int i = 0; i < n; i++) {
-        minHeap.push(Element(matrix[i][0], i, 0));
-    }
+    # Push the first element of each row into the min-heap
+    for i in range(n):
+        heapq.heappush(min_heap, Element(matrix[i][0], i, 0))
     
-    // Extract the minimum element K times
-    Element current(0, 0, 0);
-    for (int i = 0; i < k; i++) {
-        // Extract the minimum element from the heap
-        current = minHeap.top();
-        minHeap.pop();
+    current = None
+    # Extract the minimum element k times
+    for _ in range(k):
+        current = heapq.heappop(min_heap)
         
-        // If there is another element in the same row, push it into the heap
-        if (current.col + 1 < n) {
-            minHeap.push(Element(matrix[current.row][current.col + 1], current.row, current.col + 1));
-        }
-    }
+        # If there is another element in the same row, push it into the heap
+        if current.col + 1 < n:
+            heapq.heappush(min_heap, Element(matrix[current.row][current.col + 1], current.row, current.col + 1))
     
-    // The K-th smallest element will be in the 'current' variable
-    return current.value;
-}
+    return current.value
 
-int main() {
-    vector<vector<int>> matrix = {
-        {1, 5, 9},
-        {10, 11, 13},
-        {12, 13, 15}
-    };
+def main():
+    matrix = [
+        [1, 5, 9],
+        [10, 11, 13],
+        [12, 13, 15]
+    ]
     
-    int k = 8;
-    int result = kthSmallest(matrix, k);
+    k = 8
+    result = kth_smallest(matrix, k)
     
-    cout << "The " << k << "-th smallest element is: " << result << endl;
-    
-    return 0;
-}
+    print(f"The {k}-th smallest element is: {result}")
+
+if __name__ == "__main__":
+    main()
