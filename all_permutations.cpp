@@ -1,41 +1,22 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
+def generate_permutations(s, start, result):
+    if start == len(s):
+        result.append("".join(s))
+        return
 
-void generatePermutations(string& s, int start, vector<string>& result) {
-    // If we've considered all characters, store the permutation
-    if (start == s.length()) {
-        result.push_back(s);
-        return;
-    }
+    for i in range(start, len(s)):
+        s[start], s[i] = s[i], s[start]
+        generate_permutations(s, start + 1, result)
+        s[start], s[i] = s[i], s[start]
 
-    // Iterate and swap each character with the start
-    for (int i = start; i < s.length(); i++) {
-        // Swap current index with start index
-        swap(s[start], s[i]);
+def main():
+    s = input("Enter a string: ")
+    char_list = list(s)
+    result = []
+    generate_permutations(char_list, 0, result)
 
-        // Recurse with next character
-        generatePermutations(s, start + 1, result);
+    print("All permutations are:")
+    for perm in result:
+        print(perm)
 
-        // Backtrack
-        swap(s[start], s[i]);
-    }
-}
-
-int main() {
-    
-    string s;
-    cout << "Enter a string: ";
-    cin >> s;
-
-    vector<string> result;
-    generatePermutations(s, 0, result);
-
-    cout << "All permutations are: \n";
-    for (const string& perm : result) {
-        cout << perm << endl;
-    }
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
