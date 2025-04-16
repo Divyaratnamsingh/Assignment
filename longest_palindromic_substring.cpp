@@ -1,47 +1,31 @@
-#include <iostream>
-using namespace std;
+def expand_around_center(s, left, right):
+    while left >= 0 and right < len(s) and s[left] == s[right]:
+        left -= 1
+        right += 1
+    return right - left - 1
 
-int expandAroundCenter(const string& s, int left, int right) {
-    while (left >= 0 && right < s.length() && s[left] == s[right]) {
-        left--;
-        right++;
-    }
-    return right - left - 1; // Length of the palindrome
-}
+def longest_palindrome(s):
+    if not s:
+        return ""
 
-string longestPalindrome(string s) {
-    if (s.empty()) return "";
+    start = 0
+    max_length = 1
 
-    int start = 0, maxLength = 1;
+    for i in range(len(s)):
+        len1 = expand_around_center(s, i, i)
+        len2 = expand_around_center(s, i, i + 1)
+        length = max(len1, len2)
 
-    // Iterate through each character in the string
-    for (int i = 0; i < s.length(); i++) {
-        // Check for odd-length palindrome (single character center)
-        int len1 = expandAroundCenter(s, i, i);
-        // Check for even-length palindrome (pair of characters center)
-        int len2 = expandAroundCenter(s, i, i + 1);
-        
-        // Take the maximum of the two
-        int len = max(len1, len2);
+        if length > max_length:
+            max_length = length
+            start = i - (length - 1) // 2
 
-        // If we found a longer palindrome, update the result
-        if (len > maxLength) {
-            maxLength = len;
-            start = i - (len - 1) / 2; // Adjust the start index
-        }
-    }
+    return s[start:start + max_length]
 
-    return s.substr(start, maxLength);
-}
+def main():
+    s = input("Enter a string: ")
+    result = longest_palindrome(s)
+    print("The longest palindromic substring is:", result)
 
-int main() {
-    string s;
-    cout << "Enter a string: ";
-    cin >> s;
-
-    string result = longestPalindrome(s);
-
-    cout << "The longest palindromic substring is: " << result << endl;
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
