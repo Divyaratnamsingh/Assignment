@@ -1,36 +1,20 @@
-#include <iostream>
-#include <vector>
-#include <stack>
-using namespace std;
+def next_greater_element(nums):
+    n = len(nums)
+    result = [-1] * n
+    stack = []
 
-vector<int> nextGreaterElement(vector<int>& nums) {
-    int n = nums.size();
-    vector<int> result(n, -1);
-    stack<int> s;
+    for i in range(n):
+        while stack and nums[stack[-1]] < nums[i]:
+            index = stack.pop()
+            result[index] = nums[i]
+        stack.append(i)
 
-    for (int i = 0; i < n; i++) {
-        // Check if current element is greater than the element at the top of the stack
-        while (!s.empty() && nums[s.top()] < nums[i]) {
-            int index = s.top();
-            s.pop();
-            result[index] = nums[i];  // Update the result with the next greater element
-        }
-        s.push(i);  // Push current index onto the stack
-    }
+    return result
 
-    return result;
-}
+def main():
+    nums = [4, 5, 2, 10, 8]
+    result = next_greater_element(nums)
+    print("Next greater element for each element:", result)
 
-int main() {
-    vector<int> nums = {4, 5, 2, 10, 8};
-    
-    vector<int> result = nextGreaterElement(nums);
-
-    cout << "Next greater element for each element: ";
-    for (int i = 0; i < result.size(); i++) {
-        cout << result[i] << " ";
-    }
-    cout << endl;
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
