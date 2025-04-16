@@ -1,57 +1,31 @@
-#include <iostream>
-#include <vector>
-#include <climits> // For INT_MIN
-using namespace std;
+def max_sum_subarray(arr, K):
+    n = len(arr)
 
-int maxSumSubarray(const vector<int>& arr, int K) {
-    int n = arr.size();
+    if n < K:
+        print("Error: K cannot be greater than the size of the array.")
+        return -1
 
-    // If K is greater, return error
-    if (n < K) {
-        cout << "Error: K cannot be greater than the size of the array." << endl;
-        return -1;
-    }
+    # Calculate the sum of the first K elements
+    window_sum = sum(arr[:K])
+    max_sum = window_sum
 
-    // Calculate the sum of the first K elements
-    int windowSum = 0;
-    for (int i = 0; i < K; i++) {
-        windowSum += arr[i];
-    }
+    # Slide the window and update the sum
+    for i in range(K, n):
+        window_sum = window_sum - arr[i - K] + arr[i]
+        max_sum = max(max_sum, window_sum)
 
-    int maxSum = windowSum;
+    return max_sum
 
-    for (int i = K; i < n; i++) {
-        // Slide the window by removing the element going out and adding the element coming in
-        windowSum = windowSum - arr[i - K] + arr[i];
-        
-        // Update maxSum if the current window sum is greater
-        maxSum = max(maxSum, windowSum);
-    }
+def main():
+    n = int(input("Enter the size of the array: "))
+    K = int(input("Enter the value of K: "))
 
-    return maxSum;
-}
+    arr = list(map(int, input(f"Enter {n} elements:\n").split()))
 
-int main() {
-    // Input: array size, K, and elements
-    int n, K;
-    cout << "Enter the size of the array: ";
-    cin >> n;
-    
-    cout << "Enter the value of K: ";
-    cin >> K;
+    result = max_sum_subarray(arr, K)
 
-    vector<int> arr(n);
-    cout << "Enter " << n << " elements:\n";
-    for (int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
+    if result != -1:
+        print(f"The maximum sum of any subarray of size {K} is: {result}")
 
-    // Call the function to find the maximum sum of a subarray of size K
-    int result = maxSumSubarray(arr, K);
-
-    if (result != -1) {
-        cout << "The maximum sum of any subarray of size " << K << " is: " << result << endl;
-    }
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
