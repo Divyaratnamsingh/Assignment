@@ -1,47 +1,31 @@
-#include <iostream>
-#include <vector>
-#include <deque>
-using namespace std;
+from collections import deque
 
-vector<int> maxSlidingWindow(const vector<int>& nums, int k) {
-    vector<int> result;         
-    deque<int> dq;              
+def max_sliding_window(nums, k):
+    result = []
+    dq = deque()
 
-    for (int i = 0; i < nums.size(); ++i) {
-        // Remove elements out of this window (i - k)
-        if (!dq.empty() && dq.front() <= i - k)
-            dq.pop_front();
+    for i in range(len(nums)):
+        # Remove indices out of the current window
+        if dq and dq[0] <= i - k:
+            dq.popleft()
 
-        // Remove all elements smaller than current from back of deque
-        while (!dq.empty() && nums[dq.back()] < nums[i])
-            dq.pop_back();
+        # Remove smaller values as they are not useful
+        while dq and nums[dq[-1]] < nums[i]:
+            dq.pop()
 
-        // Add current index to deque
-        dq.push_back(i);
+        dq.append(i)
 
-        // First window completed, start adding to result
-        if (i >= k - 1)
-            result.push_back(nums[dq.front()]);
-    }
+        # Start recording results once the first window is complete
+        if i >= k - 1:
+            result.append(nums[dq[0]])
 
-    return result;
-}
+    return result
 
-// Helper function
-void printVector(const vector<int>& vec) {
-    for (int val : vec)
-        cout << val << " ";
-    cout << endl;
-}
+def main():
+    nums = [1, 3, -1, -3, 5, 3, 6, 7]
+    k = 3
+    result = max_sliding_window(nums, k)
+    print(f"Maximums in each sliding window of size {k}: {' '.join(map(str, result))}")
 
-int main() {
-    vector<int> nums = {1, 3, -1, -3, 5, 3, 6, 7};
-    int k = 3;
-
-    vector<int> result = maxSlidingWindow(nums, k);
-
-    cout << "Maximums in each sliding window of size " << k << ": ";
-    printVector(result);
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
