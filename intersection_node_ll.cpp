@@ -1,61 +1,48 @@
-#include <iostream>
-using namespace std;
+class ListNode:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
 
-struct ListNode {
-    int val;
-    ListNode* next;
-    ListNode(int x) : val(x), next(nullptr) {}
-};
+def get_intersection_node(headA, headB):
+    if not headA or not headB:
+        return None
 
-ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
-    if (!headA || !headB) return nullptr;
+    a, b = headA, headB
 
-    ListNode* a = headA;
-    ListNode* b = headB;
+    while a != b:
+        a = a.next if a else headB
+        b = b.next if b else headA
 
-    // Traverse both lists
-    while (a != b) {
-        a = a ? a->next : headB;
-        b = b ? b->next : headA;
-    }
-    return a;
-}
+    return a
 
-// Helper function
-void printList(ListNode* head) {
-    while (head) {
-        cout << head->val << " -> ";
-        head = head->next;
-    }
-    cout << "nullptr" << endl;
-}
+def print_list(head):
+    while head:
+        print(f"{head.val} -> ", end="")
+        head = head.next
+    print("None")
 
-int main() {
+def main():
+    intersect = ListNode(8)
+    intersect.next = ListNode(9)
 
-    ListNode* intersect = new ListNode(8);
-    intersect->next = new ListNode(9);
+    headA = ListNode(1)
+    headA.next = ListNode(2)
+    headA.next.next = intersect
 
-    // List A
-    ListNode* headA = new ListNode(1);
-    headA->next = new ListNode(2);
-    headA->next->next = intersect;
+    headB = ListNode(3)
+    headB.next = intersect
 
-    // List B
-    ListNode* headB = new ListNode(3);
-    headB->next = intersect;
+    print("List A: ", end="")
+    print_list(headA)
+    print("List B: ", end="")
+    print_list(headB)
 
-    cout << "List A: ";
-    printList(headA);
-    cout << "List B: ";
-    printList(headB);
+    result = get_intersection_node(headA, headB)
 
-    ListNode* result = getIntersectionNode(headA, headB);
+    if result:
+        print(f"Intersection at node with value: {result.val}")
+    else:
+        print("No intersection found.")
 
-    if (result) {
-        cout << "Intersection at node with value: " << result->val << endl;
-    } else {
-        cout << "No intersection found." << endl;
-    }
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
