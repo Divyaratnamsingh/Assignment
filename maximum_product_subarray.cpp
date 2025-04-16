@@ -1,40 +1,26 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
+def max_product(nums):
+    if not nums:
+        return 0
 
-int maxProduct(vector<int>& nums) {
-    if (nums.empty()) return 0;
+    max_product = nums[0]
+    min_product = nums[0]
+    result = nums[0]
 
-    // Initialize the max and min products to the first element
-    int maxProduct = nums[0];
-    int minProduct = nums[0];
-    int result = nums[0];
+    for i in range(1, len(nums)):
+        if nums[i] < 0:
+            max_product, min_product = min_product, max_product
 
-    // Traverse the array starting from the second element
-    for (int i = 1; i < nums.size(); i++) {
-        // If the current element is negative, swap maxProduct and minProduct
-        if (nums[i] < 0) {
-            swap(maxProduct, minProduct);
-        }
-        
-        // Update maxProduct and minProduct
-        maxProduct = max(nums[i], maxProduct * nums[i]);
-        minProduct = min(nums[i], minProduct * nums[i]);
+        max_product = max(nums[i], max_product * nums[i])
+        min_product = min(nums[i], min_product * nums[i])
 
-        // Update the result to be the maximum of the current result and maxProduct
-        result = max(result, maxProduct);
-    }
+        result = max(result, max_product)
 
-    return result;
-}
+    return result
 
-int main() {
-    vector<int> nums = {2, 3, -2, 4};
-    
-    int result = maxProduct(nums);
+def main():
+    nums = [2, 3, -2, 4]
+    result = max_product(nums)
+    print(f"Maximum product subarray: {result}")
 
-    cout << "Maximum product subarray: " << result << endl;
-    
-    return 0;
-}
+if __name__ == "__main__":
+    main()
