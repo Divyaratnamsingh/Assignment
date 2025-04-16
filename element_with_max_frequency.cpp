@@ -1,33 +1,22 @@
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-using namespace std;
+def find_max_frequency_element(nums):
+    freq_map = {}
 
-int findMaxFrequencyElement(const vector<int>& nums) {
-    unordered_map<int, int> freqMap;
+    for num in nums:
+        freq_map[num] = freq_map.get(num, 0) + 1
 
-    for (int num : nums) {
-        freqMap[num]++;
-    }
+    max_freq = 0
+    max_element = -1
+    for key, value in freq_map.items():
+        if value > max_freq:
+            max_freq = value
+            max_element = key
 
-    int maxFreq = 0;
-    int maxElement = -1;
-    for (auto& entry : freqMap) {
-        if (entry.second > maxFreq) {
-            maxFreq = entry.second;
-            maxElement = entry.first;
-        }
-    }
+    return max_element
 
-    return maxElement;
-}
+def main():
+    nums = [1, 3, 2, 3, 3, 1, 4]
+    result = find_max_frequency_element(nums)
+    print(f"Element with maximum frequency: {result}")
 
-int main() {
-    vector<int> nums = {1, 3, 2, 3, 3, 1, 4};
-
-    int result = findMaxFrequencyElement(nums);
-
-    cout << "Element with maximum frequency: " << result << endl;
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
