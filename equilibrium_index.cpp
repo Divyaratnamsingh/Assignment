@@ -1,51 +1,24 @@
-#include <iostream>
-#include <vector>
-using namespace std;
+def find_equilibrium_index(arr):
+    total_sum = sum(arr)
+    left_sum = 0
 
-int findEquilibriumIndex(const vector<int>& arr) {
-    int totalSum = 0;
-    int leftSum = 0;
-    
-    // Calculate total sum of the array
-    for (int num : arr) {
-        totalSum += num;
-    }
+    for i in range(len(arr)):
+        right_sum = total_sum - left_sum - arr[i]
+        if left_sum == right_sum:
+            return i
+        left_sum += arr[i]
 
-    // Traverse the array and check for equilibrium index
-    for (int i = 0; i < arr.size(); i++) {
-        int rightSum = totalSum - leftSum - arr[i];
+    return -1
 
-        // If left sum equals right sum, we found the equilibrium index
-        if (leftSum == rightSum) {
-            return i;  // Return the first equilibrium index found
-        }
+def main():
+    n = int(input("Enter the size of the array: "))
+    arr = list(map(int, input(f"Enter {n} elements:\n").split()))
+    index = find_equilibrium_index(arr)
 
-        // Update left sum for the next iteration
-        leftSum += arr[i];
-    }
+    if index != -1:
+        print(f"Equilibrium index found at position: {index}")
+    else:
+        print("No equilibrium index found.")
 
-    // If no equilibrium index is found
-    return -1;
-}
-
-int main() {
-    int n;
-    cout << "Enter the size of the array: ";
-    cin >> n;
-
-    vector<int> arr(n);
-    cout << "Enter " << n << " elements:\n";
-    for (int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-
-    int index = findEquilibriumIndex(arr);
-
-    if (index != -1) {
-        cout << "Equilibrium index found at position: " << index << endl;
-    } else {
-        cout << "No equilibrium index found." << endl;
-    }
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
