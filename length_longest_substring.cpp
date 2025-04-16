@@ -1,38 +1,21 @@
-#include <iostream>
-#include <unordered_set>
-#include <algorithm>
-using namespace std;
+def longest_unique_substring(s):
+    char_set = set()
+    left = 0
+    max_length = 0
 
-int longestUniqueSubstring(string s) {
-    unordered_set<char> charSet;  // Set to store unique characters in the window
-    int left = 0, maxLength = 0;
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
 
-    // Traverse the string with the right pointer
-    for (int right = 0; right < s.length(); right++) {
-        // If the character is already in the set, move the left pointer
-        while (charSet.find(s[right]) != charSet.end()) {
-            charSet.erase(s[left]);
-            left++;
-        }
+    return max_length
 
-        // Add the current character to the set
-        charSet.insert(s[right]);
+def main():
+    s = input("Enter a string: ")
+    result = longest_unique_substring(s)
+    print("The length of the longest substring without repeating characters is:", result)
 
-        // Update the maximum length of the window
-        maxLength = max(maxLength, right - left + 1);
-    }
-
-    return maxLength;
-}
-
-int main(){
-    string s;
-    cout << "Enter a string: ";
-    cin >> s;
-
-    int result = longestUniqueSubstring(s);
-
-    cout << "The length of the longest substring without repeating characters is: " << result << endl;
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
