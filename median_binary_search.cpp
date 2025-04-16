@@ -1,58 +1,41 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <climits> 
-using namespace std;
+import sys
 
+def find_median_sorted_arrays(nums1, nums2):
+    # Ensure nums1 is the smaller array
+    if len(nums1) > len(nums2):
+        nums1, nums2 = nums2, nums1
 
-double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-    // nums1 is the smaller array
-    if (nums1.size() > nums2.size()) {
-        swap(nums1, nums2);
-    }
+    n, m = len(nums1), len(nums2)
+    low, high = 0, n
 
-    int n = nums1.size();
-    int m = nums2.size();
-    int low = 0, high = n;
+    while low <= high:
+        partition1 = (low + high) // 2
+        partition2 = (n + m + 1) // 2 - partition1
 
-    while (low <= high) {
-        int partition1 = (low + high) / 2;
-        int partition2 = (n + m + 1) / 2 - partition1;
+        max_left1 = -sys.maxsize if partition1 == 0 else nums1[partition1 - 1]
+        min_right1 = sys.maxsize if partition1 == n else nums1[partition1]
 
-        int maxLeft1 = (partition1 == 0) ? INT_MIN : nums1[partition1 - 1];
-        int minRight1 = (partition1 == n) ? INT_MAX : nums1[partition1];
+        max_left2 = -sys.maxsize if partition2 == 0 else nums2[partition2 - 1]
+        min_right2 = sys.maxsize if partition2 == m else nums2[partition2]
 
-        int maxLeft2 = (partition2 == 0) ? INT_MIN : nums2[partition2 - 1];
-        int minRight2 = (partition2 == m) ? INT_MAX : nums2[partition2];
+        if max_left1 <= min_right2 and max_left2 <= min_right1:
+            if (n + m) % 2 == 1:
+                return max(max_left1, max_left2)
+            else:
+                return (max(max_left1, max_left2) + min(min_right1, min_right2)) / 2
+        elif max_left1 > min_right2:
+            high = partition1 - 1
+        else:
+            low = partition1 + 1
 
-        // Check if we found correct partition
-        if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1) {
-            // If total number of elements is odd
-            if ((n + m) % 2 == 1) {
-                return max(maxLeft1, maxLeft2);
-            } else {
-                // If total number of elements is even
-                return (max(maxLeft1, maxLeft2) + min(minRight1, minRight2)) / 2.0;
-            }
-        }
-        // Adjust binary search bounds based on partition condition
-        else if (maxLeft1 > minRight2) {
-            high = partition1 - 1;
-        } else {
-            low = partition1 + 1;
-        }
-    }
+    return 0.0
 
-    return 0.0;
-}
+def main():
+    nums1 = [1, 3]
+    nums2 = [2]
 
-int main() {
-    vector<int> nums1 = {1, 3};
-    vector<int> nums2 = {2};
+    median = find_median_sorted_arrays(nums1, nums2)
+    print(f"The median is: {median}")
 
-    double median = findMedianSortedArrays(nums1, nums2);
-
-    cout << "The median is: " << median << endl;
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
