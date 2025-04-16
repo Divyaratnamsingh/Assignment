@@ -1,50 +1,35 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
+def next_permutation(nums):
+    n = len(nums)
+    i = n - 2
 
+    # Find the first index 'i' such that nums[i] < nums[i + 1]
+    while i >= 0 and nums[i] >= nums[i + 1]:
+        i -= 1
 
-void nextPermutation(vector<int>& nums) {
-    int n = nums.size();
-    int i = n - 2;
+    # If such an index exists, find index 'j' to swap with
+    if i >= 0:
+        j = n - 1
+        while j >= 0 and nums[j] <= nums[i]:
+            j -= 1
+        # Swap nums[i] and nums[j]
+        nums[i], nums[j] = nums[j], nums[i]
 
-    // Find the first index 'i' such that nums[i] < nums[i + 1]
-    while (i >= 0 && nums[i] >= nums[i + 1]) {
-        i--;
-    }
+    # Reverse the subarray from i + 1 to end
+    nums[i + 1:] = reversed(nums[i + 1:])
 
-    // If such an index exists, find index 'j' to swap with
-    if (i >= 0) {
-        int j = n - 1;
-        while (j >= 0 && nums[j] <= nums[i]) {
-            j--;
-        }
-        // Swap nums[i] and nums[j]
-        swap(nums[i], nums[j]);
-    }
+def print_array(arr):
+    print(" ".join(map(str, arr)))
 
-    // Reverse the subarray from i + 1 to end
-    reverse(nums.begin() + i + 1, nums.end());
-}
+def main():
+    nums = [1, 2, 3]
 
-// Helper function 
-void printArray(const vector<int>& arr) {
-    for (int num : arr) {
-        cout << num << " ";
-    }
-    cout << endl;
-}
+    print("Original array:", end=" ")
+    print_array(nums)
 
-int main() {
-    vector<int> nums = {1, 2, 3};
+    next_permutation(nums)
 
-    cout << "Original array: ";
-    printArray(nums);
+    print("Next permutation:", end=" ")
+    print_array(nums)
 
-    nextPermutation(nums);
-
-    cout << "Next permutation: ";
-    printArray(nums);
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
