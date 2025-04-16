@@ -1,56 +1,29 @@
-#include <iostream>
-#include <vector>
-using namespace std;
+def find_combinations(candidates, target, current, result, index):
+    if target == 0:
+        result.append(list(current))
+        return
 
-// Helper function 
-void findCombinations(vector<int>& candidates, int target, vector<int>& current, vector<vector<int>>& result, int index) {
-    // If target is met, save the current combination
-    if (target == 0) {
-        result.push_back(current);
-        return;
-    }
+    for i in range(index, len(candidates)):
+        if candidates[i] <= target:
+            current.append(candidates[i])
+            find_combinations(candidates, target - candidates[i], current, result, i)
+            current.pop()
 
-    // Try all elements starting from current index
-    for (int i = index; i < candidates.size(); ++i) {
-        if (candidates[i] <= target) {
-            // Choose the element
-            current.push_back(candidates[i]);
+def combination_sum(candidates, target):
+    result = []
+    current = []
+    find_combinations(candidates, target, current, result, 0)
+    return result
 
-            // Recursive call with updated target (can reuse same number)
-            findCombinations(candidates, target - candidates[i], current, result, i);
+def print_combinations(combinations):
+    for combo in combinations:
+        print("[", " ".join(map(str, combo)), "]")
 
-            // Backtrack: remove the last element
-            current.pop_back();
-        }
-    }
-}
+if __name__ == "__main__":
+    candidates = [2, 3, 6, 7]
+    target = 7
 
+    result = combination_sum(candidates, target)
 
-vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-    vector<vector<int>> result;
-    vector<int> current;
-    findCombinations(candidates, target, current, result, 0);
-    return result;
-}
-
-// Helper function 
-void printCombinations(const vector<vector<int>>& combinations) {
-    for (const auto& combo : combinations) {
-        cout << "[ ";
-        for (int num : combo)
-            cout << num << " ";
-        cout << "]\n";
-    }
-}
-
-int main() {
-    vector<int> candidates = {2, 3, 6, 7};
-    int target = 7;
-
-    vector<vector<int>> result = combinationSum(candidates, target);
-
-    cout << "Unique combinations that sum to " << target << ":\n";
-    printCombinations(result);
-
-    return 0;
-}
+    print(f"Unique combinations that sum to {target}:")
+    print_combinations(result)
