@@ -1,46 +1,23 @@
-#include <iostream>
-#include <vector>
-using namespace std;
+def can_be_split_equally(arr):
+    total_sum = sum(arr)
+    left_sum = 0
 
-bool canBeSplitEqually(const vector<int>& arr) {
-    int totalSum = 0;
+    for i in range(len(arr) - 1):
+        left_sum += arr[i]
+        right_sum = total_sum - left_sum
+        if left_sum == right_sum:
+            return True
 
-    //Calculate total sum of the array
-    for (int num : arr) {
-        totalSum += num;
-    }
+    return False
 
-    int leftSum = 0;
+def main():
+    n = int(input("Enter the size of the array: "))
+    arr = list(map(int, input(f"Enter {n} elements:\n").split()))
 
-    // Traverse the array and keep updating leftSum
-    for (int i = 0; i < arr.size() - 1; i++) {
-        leftSum += arr[i];
-        int rightSum = totalSum - leftSum;
+    if can_be_split_equally(arr):
+        print("Yes, the array can be split into two parts with equal sum.")
+    else:
+        print("No, the array cannot be split into two parts with equal sum.")
 
-        if (leftSum == rightSum) {
-            return true; // Found a split
-        }
-    }
-
-    return false; // No split point found
-}
-
-int main() {
-    int n;
-    cout << "Enter the size of the array: ";
-    cin >> n;
-
-    vector<int> arr(n);
-    cout << "Enter " << n << " elements:\n";
-    for (int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-
-    if (canBeSplitEqually(arr)) {
-        cout << "Yes, the array can be split into two parts with equal sum." << endl;
-    } else {
-        cout << "No, the array cannot be split into two parts with equal sum." << endl;
-    }
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
