@@ -1,23 +1,13 @@
-#include <iostream>
-using namespace std;
+def is_power_of_two(num):
+    # A number is a power of two if it's greater than 0 and has exactly one bit set
+    return num > 0 and (num & (num - 1)) == 0
 
-// Function to check if a number is a power of two using bit manipulation
-bool isPowerOfTwo(int num) {
-    // A number is a power of two if it is greater than 0
-    // num & (num - 1) is 0
-    return (num > 0) && (num & (num - 1)) == 0;
-}
+def main():
+    num = int(input("Enter a number: "))
+    if is_power_of_two(num):
+        print(f"{num} is a power of two.")
+    else:
+        print(f"{num} is not a power of two.")
 
-int main() {
-    int num;
-    cout << "Enter a number: ";
-    cin >> num;
-
-    if (isPowerOfTwo(num)) {
-        cout << num << " is a power of two.\n";
-    } else {
-        cout << num << " is not a power of two.\n";
-    }
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
